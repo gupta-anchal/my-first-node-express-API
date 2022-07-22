@@ -1,5 +1,5 @@
 const UserService = require("../services/user.service")
-const {userCreationValidator} = require("../validators/user.validator")
+const {userCreationValidator, loginValidator} = require("../validators/user.validator")
 const{ isValidId } = require("../validators/idValidators")
 
 exports.save = async(req,res)=> {
@@ -53,6 +53,19 @@ exports.deleteOne = async(req,res)=> {
 exports.SetActiveUser = async(req,res)=> {
     try{
         await UserService.SetActiveUser(req,res);
+    } catch (error) {
+        console.log("error", error);
+    }
+}
+
+exports.login = async(req,res)=> {
+    try{
+        const {error, value} = loginValidator.validate(req.body);
+        if(error){
+            console.log("error :", error);
+            return res.status(403).send(error.details[0].message);
+        }
+        await UserService.login(req,res);
     } catch (error) {
         console.log("error", error);
     }

@@ -13,8 +13,15 @@ const userCreationValidator = Joi.object({
     password: Joi.string().min(8).trim().required(),
 });
 
+const loginValidator = Joi.object({
+    email: Joi.string().regex(emailRegex).trim().required(),
+    phone_numer: Joi.number().integer().min(10),
+    password: Joi.string().trim().required(),
+});
+
 module.exports = {
     userCreationValidator,
+    loginValidator
 };
 
 
