@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
-const jwtSecretKey = "dflkjddk32scmk";
+const jwtSecretKey = process.env.JWTSECRETKEY;
 
 exports.isValid = async (req, res, next) => {
   // Get token from header

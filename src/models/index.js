@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const fs = require("fs");
 const path = require("path");
-const mongo_uri = "mongodb://localhost:27017/training";
+const mongo_uri = process.env.MONGO_URI;
 const basename = path.basename(__filename);
 const db = {};
 mongoose

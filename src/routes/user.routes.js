@@ -20,6 +20,8 @@ router.post("/", UserController.save)
 //desc : "get all user"
 router.get("/", [isValid, UserController.getAll])
 
+router.get("/verify-email/:token", UserController.verifyEmail)
+
 //to get a user
 router.get("/:id", UserController.getOne)
 
@@ -32,6 +34,10 @@ router.put("/", UserController.UpdateAllUserData)
 //to update a field in user
 router.patch("/:id",UserController.SetActiveUser)
 
+//to sign in using email or phone
 router.post("/login",UserController.login);
+
+//to reset password
+router.put("/resetPassword",UserController.passwordReset);
 
 module.exports = router;

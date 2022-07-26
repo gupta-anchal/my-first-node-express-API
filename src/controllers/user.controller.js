@@ -1,6 +1,9 @@
 const UserService = require("../services/user.service")
 const {userCreationValidator, loginValidator} = require("../validators/user.validator")
-const{ isValidId } = require("../validators/idValidators")
+const{ isValidId } = require("../validators/idValidators");
+const jwt = require("jsonwebtoken");
+const secretkey = process.env.JWTSECRETKEY;
+
 
 exports.save = async(req,res)=> {
     try{
@@ -14,6 +17,27 @@ exports.save = async(req,res)=> {
         console.log("error", error);
     }
 }
+
+exports.verifyEmail = async (req, res) => {
+    try {
+      const {
+        data: { email },
+      } = jwt.verify(req.params.token, secretkey);
+  
+      const verified = await UserService.verifyemail(email);
+  
+      if (verified) {
+        return res.send("Email verified successfully!");
+      } else {
+        return res.status(500).json({
+          success: false,
+          message: "Something went worng, please try again!",
+        });
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
 
 exports.getAll = async(req,res)=> {
         try{
@@ -66,6 +90,14 @@ exports.login = async(req,res)=> {
             return res.status(403).send(error.details[0].message);
         }
         await UserService.login(req,res);
+    } catch (error) {
+        console.log("error", error);
+    }
+}
+
+exports.passwordReset = async(req,res)=> {
+    try{
+        await UserService.passwordReset(req,res);
     } catch (error) {
         console.log("error", error);
     }
